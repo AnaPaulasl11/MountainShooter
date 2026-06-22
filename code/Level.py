@@ -1,9 +1,10 @@
+import random
 import sys
 from xml.dom.minidom import Entity
 
 import pygame
 
-from code.Const import COLOR_WHITE, WIN_HEIGHT
+from code.Const import COLOR_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from code.EntityFactory import EntityFactory
 
 
@@ -12,10 +13,15 @@ class Level:
     def __init__(self, window, name, game_mode):
         self.window = window
         self.name = name
+        self.timeout = 20000  # 20 segundos
         self.game_mode = game_mode  # menu_option
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg'))
-        self.timeout = 200000  # 20 segundos
+        self.entity_list.append(EntityFactory.get_entity('Player1'))
+        if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
+            self.entity_list.append(EntityFactory.get_entity('Player2'))
+        pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+
 
     def run(self):
         pygame.mixer_music.load(f'./assets/{self.name}.mp3')
@@ -30,6 +36,9 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == EVENT_ENEMY:
+                    choice = random.choice(('Enemy1','Enemy2'))
+                    self.entity_list.append(EntityFactory.get_entity(choice))
 
             # printed text level
             self.level_text(text_size=14, text=f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', text_color=COLOR_WHITE,
