@@ -11,7 +11,7 @@ class Menu:
 
     def __init__(self,window):
         self.window = window
-        self.surf = pygame.image.load('./assets/montain-menu.png')
+        self.surf = pygame.image.load('./assets/montain-menu.png').convert_alpha()
         self.react = self.surf.get_rect(left=0, top=0)
 
 
