@@ -69,7 +69,6 @@ class Level:
                                 player_score[0] = ent.score
                             if isinstance(ent, Player) and ent.name == 'Player2':
                                 player_score[1] = ent.score
-
                         return True
 
                 found_player = False
@@ -79,7 +78,6 @@ class Level:
 
                 if not found_player:
                     return False
-
 
 
             # printed text level
